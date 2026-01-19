@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useOptimistic } from 'react';
+import { useState, useOptimistic, useTransition } from 'react';
 
 // Mock data for demonstration
 let mockPosts = [
@@ -44,6 +44,7 @@ export default function OptimisticPage() {
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
 
   // useOptimistic hook to manage optimistic updates
   const [optimisticPosts, addOptimisticPost] = useOptimistic<Post[], { title: string; content: string; tempId: string }>(
@@ -71,6 +72,7 @@ export default function OptimisticPage() {
     // Generate a temporary ID for the optimistic update
     const tempId = `temp-${Date.now()}`;
 
+    startTransition(async () => {
     // Add optimistic update immediately
     addOptimisticPost({ title, content, tempId });
 
@@ -92,6 +94,8 @@ export default function OptimisticPage() {
     } finally {
       setIsSubmitting(false);
     }
+    });
+
   };
 
   return (
