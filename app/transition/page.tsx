@@ -1,5 +1,6 @@
+"use client";
 import { useState, useTransition } from 'react';
-
+import { fetchPostsWithDelay } from './action';
 // Mock data for demonstration
 const mockPosts = [
   { id: 1, title: 'Introduction to React', content: 'Learn the basics of React components' },
@@ -7,19 +8,7 @@ const mockPosts = [
   { id: 3, title: 'State Management', content: 'Exploring different state management approaches' },
 ];
 
-// Simulate an async operation with artificial delay
-async function fetchPostsWithDelay(searchTerm: string): Promise<typeof mockPosts> {
-  'use server';
 
-  // Artificial delay to simulate network latency
-  await new Promise(resolve => setTimeout(resolve, 2000));
-
-  // Filter posts based on search term
-  return mockPosts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-}
 
 export default function TransitionPage() {
   const [searchTerm, setSearchTerm] = useState('');
